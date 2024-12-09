@@ -1,0 +1,238 @@
+.LessonsListContainer {
+    position: relative;
+    font-family: "Ubuntu", serif;
+    background: rgba(118, 141, 191, 0.619);
+    border-radius: 1rem;
+    padding: 1rem;
+    min-height: 9rem;
+    height: auto;
+    width: 100%;
+    margin-left: 20px;
+
+    h1 {
+        color: rgb(42, 55, 77);
+        font-family: "Poppins", serif;
+        text-align: left;
+        position: relative;
+        font-weight: 900;
+    }
+}
+
+@media (max-width: 450px) {
+    .LessonsListContainer {
+        margin-left: 0px;
+    }
+}
+
+.header-icons {
+    color: rgba(236, 236, 236, 0.534);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 1000;
+}   
+
+.header-icon {
+    margin: 0 5px;
+    font-size: 12px;
+    position: relative;
+}
+
+.header-icons-q {
+    position: absolute;
+    background: none;
+    top: 25px;
+    right: 4.2rem;
+    font-size: 14px;
+    color: rgba(186, 186, 186, 0.425);
+    z-index: 1000;
+}
+
+.status-icon-container {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.status-icon.done {
+    color: rgba(172, 254, 186, 0.637);
+}
+
+.status-icon.cancelled {
+    color: rgba(255, 186, 186, 0.751);
+}
+
+.status-icon.planned {
+    color: rgba(255, 254, 183, 0.765);
+}
+
+.header-icon.done:hover {
+    color: rgba(172, 254, 186, 0.637);
+}
+
+.header-icon.cancelled:hover {
+    color: rgba(255, 186, 186, 0.751);
+}
+
+.header-icon.planned:hover {
+    color: rgba(255, 254, 183, 0.765);
+}
+
+.lesson-data {
+    margin-left: 0.5rem;
+}
+
+.icon-paragraph {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    cursor: pointer;
+}
+
+.icon-paragraph:focus {
+    outline: none;
+}   
+
+.button-container {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+    margin-left: auto;
+    position: relative;
+}
+
+button.list-edit {
+    width: 30px;
+    height: 30px;
+    background: url('../../img/edit_button.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+button.list-edit:hover {
+    width: 35px;
+    height: 35px;
+    background: url('../../img/edit_button.png') no-repeat center center, radial-gradient(circle, rgb(111, 131, 170) 0%, rgba(89, 108, 147, 0.34) 70%);
+    background-size: contain;
+    border-radius: 10px;
+}
+
+button.list-delete {
+    width: 30px;
+    height: 30px;
+    background: url('../../img/trash_button.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+button.list-delete:hover {
+    width: 35px;
+    height: 35px;
+    background: url('../../img/trash_button.png') no-repeat center center, radial-gradient(circle, rgb(111, 131, 170) 0%, rgba(89, 108, 147, 0.34) 72%);
+    background-size: contain;
+    border-radius: 5px;
+}
+
+button.list-cancel {
+    background: none;
+    background-size: contain;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+
+    .fa-xmark {
+        width: 27px;
+        height: 27px;
+        transition: all 0.3s ease;
+    }
+
+    .fa-xmark:hover {
+        width: 32px;
+        height: 32px;
+        background: radial-gradient(circle, rgb(111, 131, 170) 0%, rgba(89, 108, 147, 0.34) 70%);
+        background-size: contain;
+        border-radius: 10px;
+    }
+}
+
+.list-edit-input {
+    background-color: rgba(138, 166, 226, 0.486) !important;
+    color: #efefef !important;
+    outline: none;
+    border: 1px solid rgb(255, 255, 255) !important;
+}
+
+button.save-button {
+    background: none;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.fa-floppy-disk {
+    margin-right: 0.5rem;
+    width: 30px;
+    height: 30px;
+    transition: all 0.3s ease;
+}
+
+.fa-floppy-disk:hover {
+    width: 35px;
+    height: 35px;
+}
+
+.pagination {
+    font-family: "Ubuntu", serif;
+    font-weight: 600;
+    width: 100%;
+    position: absolute;
+    bottom: 0.4rem;
+    color: rgb(42, 55, 77);
+    button {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        background: none;
+        background-size: contain;
+        border: none;
+        cursor: pointer;
+        box-shadow: none;
+    }
+
+    select {
+        position: absolute;
+        bottom: 0rem;
+        right: 1.5rem;
+        font-family: "Ubuntu", serif;
+        appearance: none;
+        color: #ccc;
+        background-color: rgba(65, 78, 104, 0.795);
+        text-align: center;
+        border-radius: 1rem;
+        padding: 7px;
+    }
+    
+    select:focus {
+        outline: none;
+    }
+}
+
+.error {
+    color: rgba(255, 0, 0, 0.646);
+}

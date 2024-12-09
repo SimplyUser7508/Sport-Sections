@@ -1,0 +1,179 @@
+.mainContainer {
+    font-family: "Ubuntu", serif;
+    background: rgba(23, 29, 37, 0.6);
+    border-radius: 1rem;
+    padding: 1rem;
+    padding-bottom: 2rem;
+    height: 13rem;
+    width: 45rem;
+    position: relative; 
+
+    h1 {
+        color: rgb(0, 119, 211);
+        font-family: "Poppins", serif;
+        text-align: left;
+        position: relative;
+        font-weight: 900;
+    }
+
+    h2 {
+        font-weight: 500;
+    }
+
+    .addButton {
+        position: absolute;
+        margin-top: -3rem;
+        margin-right: 0;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        background: url('../../img/add_button.png') no-repeat center center, radial-gradient(circle, rgb(46, 58, 75) 0%, rgb(23, 29, 37) 100%);
+        background-size: contain;
+        border-radius: 5rem;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0px 0px 5px 0 rgba(9, 11, 37, 0.648);
+        transition: all 0.5s ease;
+    }
+    
+    .addButton:hover {
+        width: 45px;
+        height: 45px;
+        background: url('../../img/add_button.png') no-repeat center center, radial-gradient(circle, rgb(40, 51, 67) 0%, rgb(23, 29, 37) 100%);
+        background-size: contain;
+        border-radius: 5rem;
+    }
+
+    input.telegramId2 {
+        background-color: rgba(47, 64, 97, 0.336);
+        position: absolute;
+        margin-left: 8rem;
+        margin-top: 6rem;
+        font-family: "Ubuntu", serif;
+        width: 10rem;
+    }
+
+    .timeDateContainer {
+        margin-left: 0rem;
+        font-family: "Ubuntu", serif;
+        font-weight: 900;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .clockContainer {
+        position: absolute;
+        left: 7rem;
+        margin-top: 3.5rem;
+        scale: 1;
+    }
+    
+    .dateContainer {
+        position: relative;
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .dateInput {
+        color: #ccc;
+        border: 1px solid gray;
+        border-radius: 1rem;
+        padding: 0.5rem;
+    }
+
+    .datePickerContainer {
+        position: absolute;
+        left: 0rem;
+        top: 2.5rem;
+    }
+}
+
+@media (max-width: 450px) {
+    .mainContainer {
+        padding: 1rem;
+        width: 100%;
+        height: 14rem;
+
+        .clockContainer {
+            position: absolute;
+            left: 7rem;
+            margin-top: 5rem;
+            scale: 1;
+        }
+
+        .datePickerContainer {
+            position: absolute;
+            left: 0rem;
+            top: 4rem;
+        }
+    }
+}
+    
+
+.heading {
+    font-weight: 900;
+    margin: 1rem 0 0;
+}
+
+.listContainer {
+    position: absolute;
+    top: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-family: "Ubuntu", serif;
+    right: -10px;
+    border-radius: 2rem;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+}
+
+.listItem {
+    display: flex;
+    width: 25rem;
+    height: 7rem;
+    margin: 0.5rem;
+    flex-flow: column;
+    border-radius: 0.2rem;
+    padding: 1rem;
+    font-weight: 300;
+    font-size: 0.8rem;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.date {
+    font-size: 2rem;
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+}
+
+.today .date {
+    font-weight: 800;
+}
+
+.today {
+    background: #ffffff70;
+}
+
+.error {
+    position: absolute;
+    top: 10rem;
+    right: 10rem;
+    color: red;
+    font-weight: bold;
+    margin: 10px 0;
+}

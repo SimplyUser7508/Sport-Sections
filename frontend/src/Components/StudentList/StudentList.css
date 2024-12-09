@@ -1,0 +1,200 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+.container {
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-right: 10px;
+    background-color: rgba(47, 73, 117, 0.61);
+    border-radius: 1rem;
+    color: rgba(204, 204, 204, 0.742);
+    font-family: "Poppins", serif;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    font-family: "Ubuntu", serif;
+    color: #efefefcf;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #5a5a5a;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.button-container {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+    margin-left: auto;
+    position: relative;
+}
+
+button.edit {
+    width: 30px;
+    height: 30px;
+    background: url('../../img/edit_button.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+button.edit:hover {
+    width: 35px;
+    height: 35px;
+    background: url('../../img/edit_button.png') no-repeat center center, radial-gradient(circle, rgb(58, 82, 120) 0%, rgba(45, 64, 98, 0.32) 70%);
+    background-size: contain;
+    border-radius: 10px;
+}
+
+button.delete {
+    width: 30px;
+    height: 30px;
+    background: url('../../img/trash_button.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+button.delete:hover {
+    width: 35px;
+    height: 35px;
+    background: url('../../img/trash_button.png') no-repeat center center, radial-gradient(circle, rgb(58, 82, 120) 0%, rgba(45, 64, 98, 0.32) 72%);
+    background-size: contain;
+    border-radius: 5px;
+}
+
+.add-button {
+    width: 40px;
+    height: 40px;
+    top: 0px;
+    right: 20px;
+    background: url('../../img/add_button.png') no-repeat center center;
+    background-size: contain;
+    position: absolute;
+    border-radius: 5rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 0 rgba(9, 11, 37, 0.648);
+    transition: all 0.5s ease;
+}
+
+.add-button:hover {
+    width: 45px;
+    height: 45px;
+    background: url('../../img/add_button.png') no-repeat center center, radial-gradient(circle, rgb(58, 82, 120) 0%, rgb(43, 61, 90) 100%);
+    background-size: contain;
+    border-radius: 5rem;
+}
+
+.add-button.rotated {
+    transform: rotate(135deg);
+}
+
+.form-content {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease, max-height 0.5s ease;
+}
+
+.form-content.visible {
+    opacity: 1;
+    max-height: 200px;
+}
+
+.form-content.edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.add-student-form-row {
+    display: flex;
+    gap: 10px;
+    padding-right: 12px;
+    padding-left: 12px;
+    margin-top: 10px;
+    padding-bottom: 15px;
+}
+
+.add-student-form h2 {
+    text-align: center;
+}
+
+.edit-student-form-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding-bottom: 12px;
+    padding-right: 12px;
+    padding-left: 12px;
+    margin-top: 10px;
+}
+
+.stud-fields {
+    background-color: rgba(114, 129, 159, 0.297) !important;
+    font-family: "Ubuntu", serif;
+    width: 100%;
+    color: black;
+    border-radius: 10px;
+    height: 50px;
+}
+
+.submitEditButton {
+    width: 63px;
+    height: 67px;
+    background: url('../../img/edit_button2.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+    scale: 1.2;
+    transition: all 0.3s ease;
+}
+
+.submitEditButton:hover {
+    width: 67px;
+    height: 67px;
+    background:  url('../../img/edit_button2.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 10px;
+}
+
+.submitEditButton:disabled:hover {
+    width: 63px;
+    height: 67px;
+    background:  url('../../img/edit_button2.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 10px;
+}
+
+.error {
+    color: red; 
+    font-weight: bold;
+}

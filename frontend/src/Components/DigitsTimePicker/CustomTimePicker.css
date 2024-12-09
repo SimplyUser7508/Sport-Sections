@@ -1,0 +1,80 @@
+.MuiMultiSectionDigitalClock-root {
+    background-color: rgba(220, 220, 220, 0.068) !important;
+}
+
+.MuiInputBase-input {
+    width: 3rem !important;
+    height: 32px !important;
+    border: none !important;
+    background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.MuiMultiSectionDigitalClock-root:hover {
+    border: black !important;
+}
+
+.MuiFormControl-root {
+    padding-left: 0.5rem !important;
+}
+
+.MuiInputBase-root {
+    background-color: rgba(220, 220, 220, 0.068) !important;
+    border: rgb(38, 45, 56) 3px !important;
+    border-radius: 0.5rem !important;
+}
+
+.MuiInputBase-root:hover {
+    border: 1px solid #000000 !important;
+    background-color: rgba(255, 255, 255, 0) !important;
+    border-radius: 0.5rem !important;
+}
+
+
+
+.MuiMultiSectionDigitalClock-root {
+    background-color: rgb(53, 67, 95) !important;
+    width: 5rem !important;
+}
+
+.MuiButtonBase-root {
+    color: #ccc !important;
+}
+
+.MuiMultiSectionDigitalClockSection-item {
+    background-color: rgba(255, 255, 255, 0.027) !important;
+    border-radius: 2rem !important;
+}
+
+.MuiPickersLayout-contentWrapper {
+    width: 6rem !important;
+    background-color: rgb(53, 67, 95) !important;
+}
+
+::-webkit-scrollbar {
+    display: none !important;
+}
+
+.MuiClockPicker-root {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+.MuiDialogActions-root {
+    background-color: rgb(30, 38, 52) !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+    border: rgb(38, 45, 56) 3px !important;
+}
+
+@media (max-width: 450px) {
+    .MuiPickersLayout-contentWrapper {
+        width: 6rem !important;
+        background-color: rgb(255, 255, 255) !important;
+    }
+    .MuiPickersArrowSwitcher-root {
+        position: absolute !important;
+        top: -0.5rem !important;
+        right: 0rem !important;
+    }
+}
