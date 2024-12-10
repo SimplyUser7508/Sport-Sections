@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Length } from "class-validator";
+import { IsEmail, IsOptional, IsString, Length } from "class-validator";
 
 export class CreateUserDto{
     @IsString({message: 'Должно быть строкой'})
@@ -9,7 +9,8 @@ export class CreateUserDto{
     @Length(8, 24, {message: 'Более 8 символов и менее 24'})
     readonly password: string;
 
+    @IsOptional()
     @IsString({message: 'Должно быть строкой'})
     @Length(3, 20, {message: 'Более 3 символов и менее 20'})
-    readonly username: string;
+    readonly username?: string;
 }

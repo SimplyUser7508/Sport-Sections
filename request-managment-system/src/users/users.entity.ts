@@ -1,10 +1,12 @@
+import { Tokens } from 'src/auth/auth.entity';
 import { Section } from 'src/sections/section.entity';
 import { 
     Entity, 
     PrimaryGeneratedColumn, 
     Column, 
     Unique, 
-    OneToMany
+    OneToMany,
+    OneToOne
 } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -24,4 +26,7 @@ export class User {
 
     @OneToMany(() => Section, (section) => section.user)
     sections: Section[];
+
+    @OneToOne(() => Tokens, (tokens) => tokens.user)
+    tokens: Tokens;
 }

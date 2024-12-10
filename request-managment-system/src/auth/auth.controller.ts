@@ -20,9 +20,20 @@ export class AuthController {
         return this.authService.login(userDto);
     }
 
+    @Post('/logout')
+    logout(@Headers('Authorization') authHeader: string) {
+        const token = authHeader.split(' ')[1];
+        return this.authService.logout(token);
+    }
+
     @Post('/registration')
     registration(@Body() userDto: CreateUserDto) {
         return this.authService.registration(userDto);
+    }
+
+    @Post('/issueTokens')
+    issueTokens(@Body('refreshToken') refreshToken: string) {
+        return this.authService.issueTokens(refreshToken);
     }
 
     @Public()

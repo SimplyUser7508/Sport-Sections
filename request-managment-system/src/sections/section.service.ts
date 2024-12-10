@@ -15,19 +15,16 @@ export class SectionService {
     ) {}
 
     async createSection(dto: CreateSectionDto, token: string): Promise<Section> {
-        // Получаем ID пользователя из токена
         const userId = await this.authService.getUserIdFromToken(token);
-        
-        // Загружаем объект пользователя из базы данных
         const user = await this.userRepository.findOne({ where: { id: userId } });
+
         if (!user) {
             throw new Error('User not found');
         }
         
-        // Создаем запись секции и привязываем пользователя
         const section = this.sectionRepository.create({
             ...dto,
-            user, // Привязываем объект User
+            user
         });
         
         return this.sectionRepository.save(section);

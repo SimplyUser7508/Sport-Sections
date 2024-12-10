@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const api: AxiosInstance = axios.create({
-    baseURL: 'localhost:3000',
+    baseURL: 'localhost:5000',
 });
 
 const accessToken = localStorage.getItem('accessToken');

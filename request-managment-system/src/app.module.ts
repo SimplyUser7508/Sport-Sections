@@ -11,6 +11,7 @@ import { AppService } from "./app.service";
 import { AppController } from "./app.controller";
 import { Section } from "./sections/section.entity";
 import { SectionModule } from "./sections/section.module";
+import { Tokens } from "./auth/auth.entity";
 
 @Module({
     controllers: [
@@ -39,7 +40,7 @@ import { SectionModule } from "./sections/section.module";
           username: process.env.USER,
           password: process.env.PASSWORD,
           database: process.env.DB,
-          entities: [User, Section],
+          entities: [User, Section, Tokens],
           autoLoadEntities: true,
           synchronize: true,
           // ssl: {
