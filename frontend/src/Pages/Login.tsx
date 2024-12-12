@@ -41,8 +41,8 @@ const Login = () => {
                 }
             );
     
-            const accessToken = response?.data?.payload?.accessToken;
-            const refreshToken = response?.data?.payload?.refreshToken;
+            const accessToken = response?.data?.accessToken;
+            const refreshToken = response?.data?.refreshToken;
     
             localStorage.setItem('accessToken', accessToken);
             Cookies.set('refreshToken', refreshToken);

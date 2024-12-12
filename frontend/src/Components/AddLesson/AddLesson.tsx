@@ -8,8 +8,8 @@ import CustomDatePicker from '../DatePicker/DatePicker';
 import CustomTimePicker from '../DigitsTimePicker/CustomTimePicker';
 import styles from './AddLesson.module.css';
 
-const ADD_LESSON_URL = '/lesson/addLesson';
-const LESSON_URL = '/lesson/getLessons';
+const ADD_SECTION_URL = '/section/create';
+const SECTION_URL = '/section/get';
 const STUDENT_URL = '/student/getStudents';
 
 enum LessonStatus {
@@ -18,24 +18,35 @@ enum LessonStatus {
     DONE = 'DONE',
 }
 
-export interface LessonItem {
-    lessonId?: string;
-    dateTime: string;
-    studentName?: string;
-    status?: LessonStatus;
-    telegramId?: string;
-}
-
-interface ApiResponse {
-    payload: {
-        lessons: LessonItem[];
+export interface SectionItem {
+    id?: number;
+    section?: string;
+    datetime: string;
+    status?: string;
+    user?: {
+        id: number;
+        email: string;
+        username: string;
     };
 }
 
-export interface Student {
-    firstName: string;
-    lastName: string;
-    id: string;
+interface ApiResponse {
+    id: number;
+    section: string;
+    datetime: string;
+    status: string;
+    user: {
+        id: number;
+        email: string;
+        username: string;
+    };
+}
+
+
+
+export interface Section {
+    value: string;
+    label: string;
 }
 
 interface DateProps {
@@ -46,15 +57,24 @@ interface DateProps {
 dayjs.locale('ru');
 
 const AddLesson: React.FC<DateProps> = ({ onDateChange, startDate }) => {
-    const [lessons, setLessons] = useState<LessonItem[]>([]);
+    const [section, setSection] = useState<SectionItem[]>([]);
     const [error, setError] = useState<string>('');
-    const [students, setStudents] = useState<{ value: string, label: string, student: Student }[]>([]);
-    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
     const [selectedTime, setSelectedTime] = useState<Dayjs>(dayjs());
-    const [addingLesson, setAddingLesson] = useState<LessonItem>({
-        dateTime: dayjs().toISOString(),
+    const [addingSection, setAddingSection] = useState<SectionItem>({
+        datetime: dayjs().toISOString(),
     });
+
+    const sections = [
+        { value: 'Futbolchik', label: 'Futbolchik' },
+        { value: 'Basketball', label: 'Basketball' },
+        { value: 'Swimming', label: 'Swimming' },
+        { value: 'Volleyball', label: 'Volleyball' },
+        { value: 'Tennis', label: 'Tennis' },
+        { value: 'Badminton', label: 'Badminton' },
+        { value: 'Kachalka', label: 'Kachalka' },
+    ];
+    const [selectedSection, setSelectedSection] = useState<Section | null>(null);
 
     const handleDateChange = (date: Date | null) => {
         if (date) {
@@ -68,31 +88,36 @@ const AddLesson: React.FC<DateProps> = ({ onDateChange, startDate }) => {
         if (time) {
             setSelectedTime(time);
 
-            const currentDateTime = dayjs(addingLesson.dateTime || dayjs().toISOString());
+            const currentDateTime = dayjs(addingSection.datetime || dayjs().toISOString());
             const updatedDateTime = currentDateTime
                 .hour(time.hour())
                 .minute(time.minute())
                 .second(0);
 
-            setAddingLesson({
-                ...addingLesson,
-                dateTime: updatedDateTime.toISOString(),
+            setAddingSection({
+                ...addingSection,
+                datetime: updatedDateTime.toISOString(),
             });
         }
     };
 
-    const fetchLessons = async () => {
+    const fetchSections= async () => {
         try {
-            const response = await api.get<ApiResponse>(LESSON_URL, {
+            const response = await api.get<SectionItem>(SECTION_URL, {
                 headers: {
-                    'x-access-token': `${localStorage.getItem('accessToken')}`
+                    'Authorization': `${localStorage.getItem('accessToken')}`
                 },
                 params: {
                     page: 1,
                     limit: 5,
                 },
             });
-            setLessons(response.data.payload.lessons || []);
+            if (Array.isArray(response.data.section)) {
+                setSection(response.data.section);
+            } else {
+                setSection([]);
+            }
+            
         } catch (err: any) {
             if (err.response?.status === 401) {
                 setError('User not authorized');
@@ -103,39 +128,39 @@ const AddLesson: React.FC<DateProps> = ({ onDateChange, startDate }) => {
     };
 
     useEffect(() => {
-        fetchLessons();
+        fetchSections();
     }, []);
 
-    const fetchStudents = async () => {
-        try {
-            const response = await api.get<{ payload: { students: Student[] } }>(STUDENT_URL, {
-                headers: {
-                    'x-access-token': `${localStorage.getItem('accessToken')}`
-                },
-            });
+    // const fetchStudents = async () => {
+    //     try {
+    //         const response = await api.get<{ payload: { students: Student[] } }>(STUDENT_URL, {
+    //             headers: {
+    //                 'x-access-token': `${localStorage.getItem('accessToken')}`
+    //             },
+    //         });
 
-            const formattedStudents = response.data.payload.students.map((student) => ({
-                value: student.id,
-                label: `${student.firstName} ${student.lastName}`,
-                student: student
-            }));
+    //         const formattedStudents = response.data.payload.students.map((student) => ({
+    //             value: student.id,
+    //             label: `${student.firstName} ${student.lastName}`,
+    //             student: student
+    //         }));
 
-            setStudents(formattedStudents);
-        } catch (err: any) {
-            if (err.response?.status === 401) {
-                setError('User not authorized');
-            } else {
-                setError('Failed to fetch students');
-            }
-        }
-    };
+    //         setStudents(formattedStudents);
+    //     } catch (err: any) {
+    //         if (err.response?.status === 401) {
+    //             setError('User not authorized');
+    //         } else {
+    //             setError('Failed to fetch students');
+    //         }
+    //     }
+    // };
 
-    useEffect(() => {
-        fetchStudents();
-    }, []);
+    // useEffect(() => {
+    //     fetchStudents();
+    // }, []);
 
     const handleAddLesson = async () => {
-        if (!selectedDate || !selectedTime || !selectedStudent) {
+        if (!selectedDate || !selectedTime || !selectedSection) {
             setError('Please select date, time, and student');
             return;
         }
@@ -148,22 +173,23 @@ const AddLesson: React.FC<DateProps> = ({ onDateChange, startDate }) => {
         const formattedDateTime = dateTime.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
 
         const newLesson = {
-            id: selectedStudent.id,
-            dateTime: formattedDateTime,
+            section: selectedSection.value,
+            datetime: formattedDateTime,
+            status: 'PLANNED'
         };
 
         try {
-            await api.post<LessonItem>(ADD_LESSON_URL, newLesson, {
+            await api.post<SectionItem>(ADD_SECTION_URL, newLesson, {
                 headers: {
-                    'x-access-token': `${localStorage.getItem('accessToken')}`,
+                    'Authorization': `${localStorage.getItem('accessToken')}`,
                 },
             });
             
-            setLessons([...lessons]);
-            setSelectedStudent(null);
+            setSection([...section]);
+            setSelectedSection(null);
             setSelectedDate(dayjs());
             setSelectedTime(dayjs());
-            fetchLessons();
+            fetchSections();
         } catch (err) {
             setError('Failed to add lesson');
         }
@@ -171,19 +197,20 @@ const AddLesson: React.FC<DateProps> = ({ onDateChange, startDate }) => {
 
     return (
         <div className={styles.mainContainer}>
-            <h1>Add lesson</h1>
+            <h1>Add Section</h1>
             <button
                 className={styles.addButton}
                 onClick={handleAddLesson}
             ></button>
             <DropdownLess
-                defaultOption={selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName}` : "Select student"}
-                options={students.map(student => ({ value: student.value, label: student.label }))}
-                selectedOption={selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName}` : ""}
+                defaultOption={"Select section"}
+                options={sections.map(section => ({ value: section.value, label: section.label }))}
+                selectedOption={selectedSection ? `${selectedSection.label}` : ""}
                 onSelect={(value) => {
-                    const student = students.find(s => s.value === value);
-                    setSelectedStudent(student ? student.student : null);
+                    const section = sections.find(s => s.value === value);
+                    setSelectedSection(section || null);
                 }}
+                
             />
             <div className={styles.clockContainer}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const EMAIL_REGEX =  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[#$@!%&*?=]).{6,30}$/;
-const REGISTER_URL = 'auth/register';
+const REGISTER_URL = 'auth/registration';
 
 interface RegisterResponse {
     accessToken: string;
@@ -31,6 +31,8 @@ const Register: React.FC = () => {
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
+
+    const [username, setUsername] = useState('');
     
     const options = [
         { value: 'English', label: 'English' },
@@ -66,7 +68,7 @@ const Register: React.FC = () => {
         }
         try {
             const response = await axios.post<RegisterResponse>(REGISTER_URL,
-                JSON.stringify({ email, password }),
+                JSON.stringify({ email, password, username }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                 }
@@ -77,6 +79,7 @@ const Register: React.FC = () => {
             setSuccess(true);
             setEmail('');
             setPassword('');
+            setUsername('');
             setMatchPassword('');
         } catch (err: any) {
             if (!err?.response) {
@@ -171,12 +174,20 @@ const Register: React.FC = () => {
                             Пароли не совпадают.
                         </p>
 
-                        <form>
-                            <label htmlFor="method">
-                                Method:
-                            </label>
-                            <Dropdown defaultOption="English" options={options} />
-                        </form>
+                        <label htmlFor="fio_input">
+                            Username:
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fio_input"
+                            onChange={(e) => setUsername(e.target.value)}
+                            value={username}
+                            required
+                            aria-describedby="confirmnote"
+                            onFocus={() => setMatchFocus(true)}
+                            onBlur={() => setMatchFocus(false)}
+                        />
 
                         <button className="AuthButton" disabled={!validEmail || !validPassword || !validMatch}>Sign Up</button>
                     </form>

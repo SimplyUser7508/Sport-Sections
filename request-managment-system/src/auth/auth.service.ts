@@ -22,7 +22,9 @@ export class AuthService {
   
     if (existingToken) {  
       existingToken.refresh_token = this.jwtService.sign({ email: user.email, id: user.id }, { expiresIn: '30d' });
+      const accessToken = this.jwtService.sign({ email: user.email, id: user.id }, { expiresIn: '15h' });
       await this.tokensRepository.save(existingToken);
+      return { accessToken, refreshToken: existingToken.refresh_token };
     } else {
       return this.generateTokens(user);
     }
@@ -75,7 +77,7 @@ export class AuthService {
       }
   }
 
-  private async generateTokens(user) {
+  private async generateTokens(user: any) {
     const paylaod = {email: user.email, id: user.id};
     const refreshToken = this.jwtService.sign(paylaod, { expiresIn: '30d' });
     const accessToken = this.jwtService.sign(paylaod, { expiresIn: '15h' });

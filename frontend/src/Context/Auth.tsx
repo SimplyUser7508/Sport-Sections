@@ -35,7 +35,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
                 withCredentials: true
             });
 
-            const { 'x-access-token': accessToken, 'refreshToken': newRefreshToken } = response.data;
+            const { 'accessToken': accessToken, 'refreshToken': newRefreshToken } = response.data;
 
             localStorage.setItem('accessToken', accessToken);
             Cookies.set('refreshToken', newRefreshToken);
@@ -65,8 +65,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
                     if (!newAccessToken) {
                         throw new Error('Failed to refresh access token');
                     }
-                    api.defaults.headers.common['x-access-token'] = newAccessToken;
-                    originalRequest.headers = { ...originalRequest.headers, 'x-access-token': newAccessToken };
+                    api.defaults.headers.common['Authorization'] = newAccessToken;
+                    originalRequest.headers = { ...originalRequest.headers, 'Authorization': newAccessToken };
                     return api(originalRequest);
                 } catch (err) {
                     console.error('Failed to refresh access token', err);

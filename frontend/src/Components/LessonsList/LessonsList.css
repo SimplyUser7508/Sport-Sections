@@ -24,6 +24,46 @@
     }
 }
 
+.LessonsListContainer ul {
+    padding-left: 0;
+}
+
+.LessonsListContainer li {
+    list-style: none; 
+    display: flex;
+    align-items: center; 
+    position: relative; 
+    margin-bottom: 1rem; 
+}
+
+.status-icon-container {
+    position: absolute; 
+    left: 0; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+.section-data {
+    font-size: 20px;
+    color:  rgb(20, 26, 37);
+    margin-left: 1.75rem; 
+    flex: 1;
+}
+
+.color-secton-name {
+    color:rgb(24, 36, 55);
+    font-size: 24px;
+}
+
+.button-container {
+    position: absolute; 
+    right: 1rem;
+    top: 50%; 
+    transform: translateY(-50%); 
+    display: flex;
+    gap: 0.5rem;
+}
+
 .header-icons {
     color: rgba(236, 236, 236, 0.534);
     position: absolute;
@@ -84,10 +124,6 @@
     color: rgba(255, 254, 183, 0.765);
 }
 
-.lesson-data {
-    margin-left: 0.5rem;
-}
-
 .icon-paragraph {
     display: inline-flex;
     align-items: center;
@@ -99,14 +135,14 @@
     outline: none;
 }   
 
-.button-container {
+/* .button-container {
     display: flex;
     padding-left: 10px;
     padding-right: 10px;
     gap: 10px;
     margin-left: auto;
     position: relative;
-}
+} */
 
 button.list-edit {
     width: 30px;

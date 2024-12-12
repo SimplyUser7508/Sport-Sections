@@ -14,29 +14,29 @@ import api from '../../api/Axios';
 
 dayjs.extend(customParseFormat);
 
-const LESSON_URL = '/lesson/getLessons';
-const DELETE_LESSON_URL = '/lesson/deleteLesson';
-const UPDATE_LESSON_URL = '/lesson/updateLesson';
+const SECTION_URL = '/section/get';
+const DELETE_LESSON_URL = '/section/delete';
+const UPDATE_LESSON_URL = '/section/update';
 const CANCEL_LESSON_URL = '/lesson/cancelLesson';
 
-enum LessonStatus {
+enum SectionStatus {
     PLANNED = 'PLANNED',
     CANCELLED = 'CANCELLED',
     DONE = 'DONE',
 }
 
-export interface LessonItem {
-    lessonId?: string;
-    dateTime: string;
-    studentName?: string;
-    status?: LessonStatus;
-}
-
-interface ApiResponse {
-    payload: {
-        lessons: LessonItem[];
+export interface SectionItem {
+    id?: string;
+    section?: string;
+    datetime: string;
+    status?: string;
+    user?: {
+        id: number;
+        email: string;
+        username: string;
     };
 }
+
 
 export interface CustomButtonProps {
     onDateChange: (date: Date | null) => void;
@@ -49,16 +49,16 @@ interface Query {
 }
 
 const LessonsList: React.FC<CustomButtonProps> = ({ onDateChange, startDate }) => {
-    const [lessons, setLessons] = useState<LessonItem[]>([]);
+    const [section, setSection] = useState<SectionItem[]>([]);
     const [error, setError] = useState<string>('');
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState<Dayjs>(dayjs());
-    const [editedLesson, setEditedLesson] = useState<LessonItem>({
-        lessonId: '',
-        dateTime: '',
-        studentName: '',
-        status: LessonStatus.PLANNED
+    const [editedLesson, setEditedLesson] = useState<SectionItem>({
+        id: '',
+        datetime: '',
+        section: '',
+        status: SectionStatus.PLANNED
     });
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
@@ -67,32 +67,36 @@ const LessonsList: React.FC<CustomButtonProps> = ({ onDateChange, startDate }) =
         setPage(newPage);
     };
 
-    const fetchLessons = useCallback(async ({ page, limit }: Query) => {
+    const fetchSections = useCallback(async ({ page, limit }: Query) => {
         setError('');
         try {
-            const response = await api.get<ApiResponse>(LESSON_URL, {
+            const response = await api.get<SectionItem>(SECTION_URL, {
                 headers: {
-                    'x-access-token': `${localStorage.getItem('accessToken')}`
+                    'Authorization': `${localStorage.getItem('accessToken')}`
                 },
                 params: { page, limit }
             });
-            setLessons(response.data.payload.lessons || []);
+            if (Array.isArray(response.data.section)) {
+                setSection(response.data.section);
+            } else {
+                setSection([]);
+            }
         } catch (err: any) {
             setError(`Failed to fetch lessons: ${err.response?.status} ${err.response?.statusText}`);
         }
     }, []);
 
     useEffect(() => {
-        fetchLessons({ page, limit });
-    }, [page, limit, fetchLessons]);
+        fetchSections({ page, limit });
+    }, [page, limit, fetchSections]);
 
-    const toggleCalendar = (lesson: LessonItem) => {
-        if (editingLessonId === lesson.lessonId) {
+    const toggleCalendar = (lesson: SectionItem) => {
+        if (editingLessonId === lesson.id) {
             setEditingLessonId(null);
             setCalendarOpen(false);
         } else {
-            if (lesson.lessonId) {
-                setEditingLessonId(lesson.lessonId);
+            if (lesson.id) {
+                setEditingLessonId(lesson.id);
                 setEditedLesson(lesson);
                 setCalendarOpen(true);
             }
@@ -102,11 +106,11 @@ const LessonsList: React.FC<CustomButtonProps> = ({ onDateChange, startDate }) =
     const handleDateChange = (date: Date | null) => {
         if (date) {
             const updatedDate = new Date(date);
-            const existingDate = new Date(editedLesson.dateTime);
+            const existingDate = new Date(editedLesson.datetime);
             updatedDate.setHours(existingDate.getHours(), existingDate.getMinutes());
             setEditedLesson({
                 ...editedLesson,
-                dateTime: updatedDate.toISOString(),
+                datetime: updatedDate.toISOString(),
             });
         }
         onDateChange(date);
@@ -116,7 +120,7 @@ const LessonsList: React.FC<CustomButtonProps> = ({ onDateChange, startDate }) =
         if (time) {
             setSelectedTime(time);
 
-            const currentDateTime = dayjs(editedLesson.dateTime || dayjs().toISOString());
+            const currentDateTime = dayjs(editedLesson.datetime || dayjs().toISOString());
             const updatedDateTime = currentDateTime
                 .hour(time.hour())
                 .minute(time.minute())
@@ -124,68 +128,75 @@ const LessonsList: React.FC<CustomButtonProps> = ({ onDateChange, startDate }) =
 
             setEditedLesson({
                 ...editedLesson,
-                dateTime: updatedDateTime.toISOString(),
+                datetime: updatedDateTime.toISOString(),
             });
         }
     };
 
     const handleSave = async () => {
+        const id = editedLesson.id;
+        if (!id) {
+            setError('Missing lesson ID');
+            return;
+        }
+    
         try {
-            await api.post(UPDATE_LESSON_URL, editedLesson, {
+            await api.post(`${UPDATE_LESSON_URL}/${id}`, editedLesson, {
                 headers: {
-                    'x-access-token': `${localStorage.getItem('accessToken')}`
+                    'Authorization': `${localStorage.getItem('accessToken')}`
                 },
             });
-            fetchLessons({ page, limit });
+            fetchSections({ page, limit });
             setEditingLessonId(null);
             setCalendarOpen(false);
         } catch (err) {
             setError('Failed to update lesson');
         }
     };
+    
 
-    const handleDelete = async (lessonId: string) => {
+    const handleDelete = async (id: string) => {
         try {
-            await api.post(DELETE_LESSON_URL, { lessonId }, {
+            await api.delete(`${DELETE_LESSON_URL}/${id}`, {
                 headers: {
-                    'x-access-token': `${localStorage.getItem('accessToken')}`
+                    Authorization: `${localStorage.getItem('accessToken')}`,
                 },
             });
-            setLessons(lessons.filter(lesson => lesson.lessonId !== lessonId));
-            fetchLessons({ page, limit });
+            setSection(section.filter((section) => section.id !== id));
+            fetchSections({ page, limit });
         } catch (err) {
             setError('Failed to delete lesson');
         }
     };
 
-    const handleCancel = async (lessonId: string) => {
-        try {
-            await api.post(CANCEL_LESSON_URL, { lessonId }, {
-                headers: {
-                    'x-access-token': `${localStorage.getItem('accessToken')}`
-                },
-            });
-            setLessons(lessons.filter(lesson => lesson.lessonId !== lessonId));
-            fetchLessons({ page, limit });
-        } catch (err) {
-            setError('Failed to cancel lesson');
-        }
-    };
+    // const handleCancel = async (id: string) => {
+    //     try {
+    //         await api.post(CANCEL_LESSON_URL, { id }, {
+    //             headers: {
+    //                 'Authorization': `${localStorage.getItem('accessToken')}`
+    //             },
+    //         });
+    //         setSection(section.filter(section => section.id !== id));
+    //         fetchSections({ page, limit });
+    //     } catch (err) {
+    //         setError('Failed to cancel lesson');
+    //     }
+    // };
 
-    const renderStatusIcon = (status: LessonStatus | undefined) => {
+    const renderStatusIcon = (status: SectionStatus | undefined) => {
         switch (status) {
-            case LessonStatus.DONE:
+            case SectionStatus.DONE:
                 return <FontAwesomeIcon icon={faCheck} className="status-icon done" />;
-            case LessonStatus.CANCELLED:
+            case SectionStatus.CANCELLED:
                 return <FontAwesomeIcon icon={faTimes} className="status-icon cancelled" />;
-            case LessonStatus.PLANNED:
+            case SectionStatus.PLANNED:
                 return <FontAwesomeIcon icon={faClock} className="status-icon planned" />;
             default:
                 return null;
         }
     };
 
-    const paginatedLessons = lessons.slice(0, limit);
+    const paginatedSections = Array.isArray(section) ? section.slice(0, limit) : [];
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -204,68 +215,64 @@ const LessonsList: React.FC<CustomButtonProps> = ({ onDateChange, startDate }) =
                     </p>
                     <p
                         data-tooltip-id="my-tooltip"
-                        data-tooltip-content="Отменено"
-                        className="icon-paragraph"
-                    >
-                        <FontAwesomeIcon icon={faTimes} className="header-icon cancelled" />
-                    </p>
-                    <p
-                        data-tooltip-id="my-tooltip"
                         data-tooltip-content="Запланировано"
                         className="icon-paragraph"
                     >
                         <FontAwesomeIcon icon={faClock} className="header-icon planned" />
                     </p>
                 </div>
-                <h1>Lessons:</h1>
+                <h1>Sections:</h1>
                 {error && <p className="error">{error}</p>}
                 <ul>
-                    {paginatedLessons.map(lesson => (
-                        <li key={lesson.lessonId}>
+                    {paginatedSections.map(section => (
+                        <li key={section.id}>
                             <div className="status-icon-container">
-                                {renderStatusIcon(lesson.status)}
+                            {renderStatusIcon(section.status as SectionStatus)}
                             </div>
-                            <div className='lesson-data'>
-                                {editingLessonId === lesson.lessonId ? (
-                                    <>
-                                        <p>{lesson.studentName}</p>
-                                        {calendarOpen && (
-                                            <div style={{ position: 'relative', zIndex: '1000' }}>
-                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                    <CustomDatePicker startDate={startDate} onDateChange={handleDateChange} />
-                                                    <div style={{ position: 'absolute', left: '6rem', bottom: '0rem' }}>
-                                                        <CustomTimePicker
-                                                            value={selectedTime}
-                                                            onChange={handleTimeChange}
-                                                        />
-                                                    </div>
-                                                </LocalizationProvider>
-                                            </div>
-                                        )}
-                                    </>
-                                ) : (
-                                    <>
-                                        <p>{dayjs(lesson.dateTime).format('DD-MM-YYYY HH:mm')}</p>
-                                        <p>{lesson.studentName}</p>
-                                    </>
-                                )}
+                            <div className='section-data'>
+                            {editingLessonId === section.id ? (
+                                <>
+                                    <p>{section.section}</p>
+
+                                    {calendarOpen && (
+                                        <div style={{ position: 'relative', zIndex: '1000' }}>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <CustomDatePicker startDate={startDate} onDateChange={handleDateChange} />
+                                                <div style={{ position: 'absolute', left: '6rem', bottom: '0rem' }}>
+                                                    <CustomTimePicker
+                                                        value={selectedTime}
+                                                        onChange={handleTimeChange}
+                                                    />
+                                                </div>
+                                            </LocalizationProvider>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    <div className="color-secton-name">
+                                        <p>{section.section}</p>
+                                    </div>
+                                    <p>{dayjs(section.datetime).format('DD-MM-YYYY HH:mm')}</p> {/* Дата */}
+                                </>
+                            )}
                             </div>
                             <div className="button-container">
-                                {editingLessonId !== lesson.lessonId && (
+                                {editingLessonId !== section.id && (
                                     <>
-                                        {lesson.status === LessonStatus.PLANNED && (
-                                            <button className="list-edit" onClick={() => toggleCalendar(lesson)}></button>
+                                        {section.status === SectionStatus.PLANNED && (
+                                            <button className="list-edit" onClick={() => toggleCalendar(section)}></button>
                                         )}
-                                        {lesson.status === LessonStatus.PLANNED && (
-                                            <button className="list-cancel" onClick={() => handleCancel(lesson.lessonId || '')}>
+                                        {/* {section.status === SectionStatus.PLANNED && (
+                                            <button className="list-cancel" onClick={() => handleCancel(section.id || '')}>
                                                 <FontAwesomeIcon icon={faTimes} />
                                             </button>
-                                        )}
-                                        <button className="list-delete" onClick={() => handleDelete(lesson.lessonId || '')}></button>
+                                        )} */}
+                                        <button className="list-delete" onClick={() => handleDelete(section.id || '')}></button>
                                     </>
                                 )}
                             </div>
-                            {editingLessonId === lesson.lessonId && (
+                            {editingLessonId === section.id && (
                                 <button className="save-button" onClick={handleSave}>
                                     <FontAwesomeIcon icon={faSave} />
                                 </button>
@@ -282,7 +289,7 @@ const LessonsList: React.FC<CustomButtonProps> = ({ onDateChange, startDate }) =
                     </button>
                     <span>Page {page}</span>
                     <button 
-                        disabled={paginatedLessons.length < limit} 
+                        disabled={paginatedSections.length < limit} 
                         onClick={() => handlePageChange(page + 1)}
                     >
                         <FontAwesomeIcon icon={faAngleRight} />

@@ -7,18 +7,12 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { JwtModule } from "@nestjs/jwt";
 import { APP_GUARD } from '@nestjs/core';
-import { AppService } from "./app.service";
-import { AppController } from "./app.controller";
 import { Section } from "./sections/section.entity";
 import { SectionModule } from "./sections/section.module";
 import { Tokens } from "./auth/auth.entity";
 
 @Module({
-    controllers: [
-      AppController
-    ],
     providers: [
-      AppService,
       { provide: APP_GUARD,
       useClass: JwtAuthGuard }
     ],

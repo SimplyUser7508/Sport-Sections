@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
 import { Public } from './auth.set-metadata';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
 
@@ -22,8 +22,7 @@ export class AuthController {
 
     @Post('/logout')
     logout(@Headers('Authorization') authHeader: string) {
-        const token = authHeader.split(' ')[1];
-        return this.authService.logout(token);
+        return this.authService.logout(authHeader);
     }
 
     @Post('/registration')
@@ -39,7 +38,6 @@ export class AuthController {
     @Public()
     @Get('/profile')
     async getProfile(@Headers('Authorization') authHeader: string) {
-        const token = authHeader.split(' ')[1]; 
-        return this.authService.getUserIdFromToken(token);
+        return this.authService.getUserIdFromToken(authHeader);
     }
 }

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import StudentList from '../Components/StudentList/StudentList';
 import LessonsList from '../Components/LessonsList/LessonsList';
 import AddLesson from '../Components/AddLesson/AddLesson';
 import dayjs, { Dayjs } from 'dayjs';
@@ -28,7 +27,6 @@ const Home: React.FC = () => {
 
   return (
     <div className='mainWrapper'>
-      <StudentList />
       <div className='lessonRow'>
         <AddLesson onDateChange={(date) => setSelectedDate(date ? dayjs(date) : null)} startDate={selectedDate?.toDate() || null} />
         <LessonsList onDateChange={(date) => setSelectedDate(date ? dayjs(date) : null)} startDate={selectedDate?.toDate() || null} />
