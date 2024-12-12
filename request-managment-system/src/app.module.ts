@@ -37,9 +37,7 @@ import { Tokens } from "./auth/auth.entity";
           entities: [User, Section, Tokens],
           autoLoadEntities: true,
           synchronize: true,
-          // ssl: {
-          //   ca: fs.readFileSync(process.env.CA)
-          // },
+          ssl: { rejectUnauthorized: false },
         }),
         UsersModule,
         AuthModule,
