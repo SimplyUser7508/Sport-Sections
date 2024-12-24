@@ -35,7 +35,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
                 withCredentials: true
             });
 
-            const { accessToken, 'refreshToken': newRefreshToken } = response.data;
+            const { 'accessToken': accessToken, 'refreshToken': newRefreshToken } = response.data;
 
             localStorage.setItem('accessToken', accessToken);
             Cookies.set('refreshToken', newRefreshToken);

@@ -14,23 +14,13 @@ const DropdownLess: React.FC<DropdownProps> = ({ defaultOption, options, selecte
             <div className="dropdown-button">{selectedOption || defaultOption}</div>
             <div className="dropdown-content">
                 {options.map((option, index) => (
-                    <button
-                    key={index}
-                    style={{
-                        color: option.disabled ? '#888888' : '#000',
-                        pointerEvents: option.disabled ? 'none' : 'auto',
-                        background: 'none',
-                        border: 'none',
-                        padding: '0',
-                        font: 'inherit',
-                        textDecoration: 'underline',
-                        cursor: option.disabled ? 'default' : 'pointer',
-                    }}
-                    onClick={() => !option.disabled && onSelect(option.value)}
-                    disabled={option.disabled}
-                >
-                    {option.label}
-                </button>
+                    <a
+                        key={index}
+                        style={{ color: option.disabled ? '#888888' : '#000', pointerEvents: option.disabled ? 'none' : 'auto' }}
+                        onClick={() => !option.disabled && onSelect(option.value)}
+                    >
+                        {option.label}
+                    </a>
                 ))}
             </div>
         </div>
