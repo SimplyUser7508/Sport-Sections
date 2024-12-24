@@ -20,9 +20,9 @@ import { join } from "path";
     ],
     imports: [
       ConfigModule.forRoot(),
-      ServeStaticModule.forRoot({
-        rootPath: join(__dirname, '..', 'public'),
-      }),
+      // ServeStaticModule.forRoot({
+      //   rootPath: join(__dirname,  '..', 'frontend', 'build'),
+      // }),
       JwtModule.register({
         secret: process.env.PRIVATE_KEY,
         signOptions: {
