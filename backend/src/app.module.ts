@@ -21,7 +21,7 @@ import { join } from "path";
     imports: [
       ConfigModule.forRoot(),
       ServeStaticModule.forRoot({
-        rootPath: join(__dirname, '..', '..', 'frontend', 'build'),
+        rootPath: join(__dirname, '..', 'public'),
       }),
       JwtModule.register({
         secret: process.env.PRIVATE_KEY,
