@@ -10,13 +10,6 @@ import styles from './AddLesson.module.css';
 
 const ADD_SECTION_URL = '/section/create';
 const SECTION_URL = '/section/get';
-const STUDENT_URL = '/student/getStudents';
-
-enum LessonStatus {
-    PLANNED = 'PLANNED',
-    CANCELLED = 'CANCELLED',
-    DONE = 'DONE',
-}
 
 export interface SectionItem {
     id?: number;
@@ -29,20 +22,6 @@ export interface SectionItem {
         username: string;
     };
 }
-
-interface ApiResponse {
-    id: number;
-    section: string;
-    datetime: string;
-    status: string;
-    user: {
-        id: number;
-        email: string;
-        username: string;
-    };
-}
-
-
 
 export interface Section {
     value: string;
@@ -58,7 +37,7 @@ dayjs.locale('ru');
 
 const AddLesson: React.FC<DateProps> = ({ onDateChange, startDate }) => {
     const [section, setSection] = useState<SectionItem[]>([]);
-    const [error, setError] = useState<string>('');
+    const [,setError] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
     const [selectedTime, setSelectedTime] = useState<Dayjs>(dayjs());
     const [addingSection, setAddingSection] = useState<SectionItem>({

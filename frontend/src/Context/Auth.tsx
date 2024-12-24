@@ -1,5 +1,5 @@
-import { createContext, useState, Dispatch, SetStateAction, FC, ReactNode, useEffect, useCallback } from "react";
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { createContext, useState, Dispatch, SetStateAction, FC, ReactNode, useCallback } from "react";
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import Cookies from 'js-cookie';
 import api from "../api/Axios";
 
@@ -35,7 +35,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
                 withCredentials: true
             });
 
-            const { 'accessToken': accessToken, 'refreshToken': newRefreshToken } = response.data;
+            const { accessToken, 'refreshToken': newRefreshToken } = response.data;
 
             localStorage.setItem('accessToken', accessToken);
             Cookies.set('refreshToken', newRefreshToken);

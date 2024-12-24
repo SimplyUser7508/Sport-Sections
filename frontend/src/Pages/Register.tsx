@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect, FormEvent } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from '../api/Axios';
-import Dropdown from "../Components/Dropdown/Dropdown";
+import axios from '../api/Axios';   
 import { Link } from "react-router-dom";
 
 const EMAIL_REGEX =  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -33,11 +32,6 @@ const Register: React.FC = () => {
     const [success, setSuccess] = useState(false);
 
     const [username, setUsername] = useState('');
-    
-    const options = [
-        { value: 'English', label: 'English' },
-        { value: 'ComingSoon', label: 'Coming soon...', disabled: true }
-    ];
 
     useEffect(() => {
         if (emailRef.current) {

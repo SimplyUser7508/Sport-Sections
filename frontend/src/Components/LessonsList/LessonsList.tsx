@@ -17,7 +17,6 @@ dayjs.extend(customParseFormat);
 const SECTION_URL = '/section/get';
 const DELETE_LESSON_URL = '/section/delete';
 const UPDATE_LESSON_URL = '/section/update';
-const CANCEL_LESSON_URL = '/lesson/cancelLesson';
 
 enum SectionStatus {
     PLANNED = 'PLANNED',
