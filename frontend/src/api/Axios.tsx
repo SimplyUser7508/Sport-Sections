@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const api: AxiosInstance = axios.create({
-    baseURL: 'https://example.com/api', // Замените на реальный URL вашего API
+    baseURL: 'https://sport-sections.up.railway.app/api',
 });
 
 const accessToken = localStorage.getItem('accessToken');

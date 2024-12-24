@@ -10,6 +10,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { Section } from "./sections/section.entity";
 import { SectionModule } from "./sections/section.module";
 import { Tokens } from "./auth/auth.entity";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
     providers: [
@@ -18,9 +20,9 @@ import { Tokens } from "./auth/auth.entity";
     ],
     imports: [
       ConfigModule.forRoot(),
-      // ServeStaticModule.forRoot({
-      //   rootPath: join(__dirname, '..', 'client'),
-      // }),
+      ServeStaticModule.forRoot({
+        rootPath: join(__dirname, '..', '..', 'frontend', 'build'),
+      }),
       JwtModule.register({
         secret: process.env.PRIVATE_KEY,
         signOptions: {
