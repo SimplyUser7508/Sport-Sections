@@ -17,6 +17,6 @@ async function bootstrap() {
   // const jwtService = app.get( JwtService )
   // app.useGlobalGuards( new JwtAuthGuard( jwtService, reflector ) );
   app.useGlobalPipes(new ValidationPipe())
-  await app.listen(process.env.PORT_WEB, () => console.log(`Server started on port: ${process.env.PORT_WEB}`));
+  await app.listen(process.env.PORT, () => console.log(`Server started on port: ${process.env.PORT}`));
 }
 bootstrap();
